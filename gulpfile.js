@@ -4,12 +4,12 @@ var browserSync = require('browser-sync').create();
 var useref = require('gulp-useref');
 var uglify = require('gulp-uglify');
 var gulpIf = require('gulp-if');
-var cssnano = require('gulp-cssnano');
 var imagemin = require('gulp-imagemin');
 var del = require('del');
 var cache = require('gulp-cache');
 var sequence = require('run-sequence');
 var autoprefixer = require('gulp-autoprefixer');
+var csso = require('gulp-csso');
 
 gulp.task('sass', function() {
     return gulp.src('app/scss/**/*.scss')
@@ -39,7 +39,6 @@ gulp.task('useref', function(){
     return gulp.src('app/*.html')
         .pipe(useref())
         .pipe(gulpIf('app/js/**/*.js', uglify()))
-        .pipe(gulpIf('app/css/**/*.css', cssnano()))
         .pipe(gulp.dest('dist'))
 });
 
@@ -67,10 +66,16 @@ gulp.task('autoprefixer', function() {
         .pipe(gulp.dest('dist'))
 });
 
+gulp.task('csso', function () {
+    return gulp.src('app/**/*.css')
+        .pipe(csso())
+        .pipe(gulp.dest('dist'));
+});
+
 gulp.task('dev', function(){
     sequence(['sass', 'browserSync', 'watch'])
 });
 
 gulp.task('build', function(){
-    sequence('clean:dist', ['sass', 'useref', 'img', 'fonts', 'autoprefixer'])
+    sequence('clean:dist', ['sass', 'useref', 'csso','img', 'fonts', 'autoprefixer'])
 });
