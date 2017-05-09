@@ -1,8 +1,7 @@
 {
-  "name": "interiorideas",
+  "name": "app-name",
   "version": "1.0.0",
-  "description": "Interiorideas.pl page",
-  "main": "index.js",
+  "description": "app description",
   "devDependencies": {
     "browser-sync": "^2.18.8",
     "del": "^2.2.2",
