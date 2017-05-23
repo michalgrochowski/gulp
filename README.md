@@ -17,5 +17,5 @@ Plugins used:
 - gulp-csso
 
 Main tasks:
-- <code>gulp dev</code> - sequenced sass (convert Scss to Css), browser-sync (reload page after change in files) and watch function,
-- <code>gulp build</code> - sequenced cleaning "dist" directory and then sass (convert Scss to Css), useref (uglifying JS), csso (minify Css), img (optimizing images and moving them to "dist/img"), moving fonts to fonts to "dist/fonts" and autoprefixer for Css.
+- <code>gulp</code> - sequenced sass (convert Scss to Css), browser-sync (reload page after change in files) and watch function,
+- <code>gulp build</code> - sequenced cleaning "dist" directory and then sass (convert Scss to Css), useref (uglifying JS), csso (minify Css), img (optimizing images and moving them to "dist/img"), moving fonts to "dist/fonts" and autoprefixer for Css.
