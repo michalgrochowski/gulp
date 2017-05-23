@@ -72,7 +72,7 @@ gulp.task('csso', function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('dev', function(){
+gulp.task('default', function(){
     sequence(['sass', 'browserSync', 'watch'])
 });
 
