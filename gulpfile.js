@@ -9,13 +9,13 @@ var del = require('del');
 var cache = require('gulp-cache');
 var sequence = require('run-sequence');
 var autoprefixer = require('gulp-autoprefixer');
-var csso = require('gulp-csso');
+var cssmin = require('gulp-cssmin');
 
 gulp.task('sass', function() {
     return gulp.src('app/scss/**/*.scss')
         .pipe(sass())
         .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
+            browsers: ['last 2 versions', 'IE 10-11',],
             cascade: false
         }))
         .pipe(gulp.dest('app/css'))
@@ -41,9 +41,20 @@ gulp.task('browserSync', function() {
 gulp.task('useref', function(){
     return gulp.src('app/*.html')
         .pipe(useref())
-        .pipe(gulpIf('app/js/**/*.js', uglify()))
         .pipe(gulp.dest('dist'))
 });
+
+gulp.task('uglify', function() {
+    return gulp.src('dist/js/main.min.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/js'))
+})
+
+gulp.task('cssmin', function() {
+    return gulp.src('dist/css/main.min.css')
+        .pipe(cssmin())
+        .pipe(gulp.dest('dist/css'))
+})
 
 gulp.task('img', function(){
     return gulp.src('app/img/**/*.+(png|jpg|gif|svg)')
@@ -56,19 +67,28 @@ gulp.task('font', function(){
         .pipe(gulp.dest('dist/font'))
 });
 
+gulp.task('fonts', function(){
+    return gulp.src('app/fonts/**/*')
+        .pipe(gulp.dest('dist/fonts'))
+});
+
 gulp.task('php', function(){
     return gulp.src('app/phpmailer/**/*')
         .pipe(gulp.dest('dist/phpmailer'))
 });
 
-gulp.task('clean:dist', function(){
-    return del.sync('dist');
+gulp.task('form', function(){
+    return gulp.src('app/formularz.php')
+        .pipe(gulp.dest('dist'))
 });
 
-gulp.task('csso', function () {
-    return gulp.src('app/**/*.css')
-        .pipe(csso())
-        .pipe(gulp.dest('dist'));
+gulp.task('json', function(){
+    return gulp.src('app/json/**/*.json')
+        .pipe(gulp.dest('dist/json'))
+});
+
+gulp.task('clean:dist', function(){
+    return del.sync('dist');
 });
 
 gulp.task('default', function(){
@@ -76,5 +96,5 @@ gulp.task('default', function(){
 });
 
 gulp.task('build', function(){
-    sequence('clean:dist', ['sass', 'useref', 'csso','img', 'font', 'php',])
+    sequence('clean:dist', ['sass', 'useref', 'img', 'font', 'fonts', 'php', 'json', 'form'], 'uglify', 'cssmin')
 });
